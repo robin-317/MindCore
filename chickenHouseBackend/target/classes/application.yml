@@ -1,0 +1,44 @@
+
+spring:
+  application:
+    name: chickenHouse
+  #数据库连接信息
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/chicken_house
+    username: root
+    password: wzy1214.
+    type: com.zaxxer.hikari.HikariDataSource
+  servlet:
+    multipart:
+      # 最大请求大小
+      max-request-size: 100MB
+      # 最大文件大小
+      max-file-size: 100MB
+  data:
+    redis:
+      port: 6379
+      host: localhost
+      password: wzy1214.
+
+mybatis:
+  #配置Mybatis日志输出
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #驼峰命名映射
+    map-underscore-to-camel-case: true
+  #未同包同名时，自己定义xml映射文件的位置
+  mapper-locations: classpath:mapper/*.xml
+
+logging:
+  level:
+    org.springframework.jdbc.support.JdbcTransactionManager: debug
+
+# 阿里云OSS
+aliyun:
+  oss:
+    endpoint: https://oss-cn-beijing.aliyuncs.com
+    bucketName: yangyang-1
+    region: cn-beijing
+server:
+  port: 8081

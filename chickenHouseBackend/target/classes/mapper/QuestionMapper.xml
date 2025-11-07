@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heima.chickenhousebackend.mapper.QuestionMapper">  <!--位置-->
+
+    <!--发布问题-->
+    <insert id="postQuestion">
+        insert into question (comment,comment_img,title,user_id)
+        values (#{comment},#{commentImg},#{title},#{userId})
+    </insert>
+
+    <!--根据id获取问题发帖人的信息-->
+    <select id="getUserById" resultType="com.heima.chickenhousebackend.pojo.User">
+        select * from user where id = #{id}
+    </select>
+
+    <!--获取所有问题-->
+    <select id="getList" resultType="com.heima.chickenhousebackend.pojo.Question">
+        select * from question
+    </select>
+
+    <!--分页查询所有问题-->
+    <select id="pageAll" resultType="com.heima.chickenhousebackend.pojo.Question">
+        select * from question
+        limit #{start},#{page.pageSize}
+    </select>
+
+    <!--根据id获取问题贴的详情内容-->
+    <select id="getInfoById" resultType="com.heima.chickenhousebackend.pojo.Question">
+        select * from question where id = #{id}
+    </select>
+
+    <!--根据用户id查询发布的问题中，已解决和为解决的问题的数量-->
+    <select id="getConsoleCount" resultType="java.util.Map">
+        select
+            if(console=true,'已解决','未解决') name,
+            count(*) value
+        from question
+        where user_id = #{id}
+        group by console
+    </select>
+
+    <!--根据id修改问题已解决-->
+    <update id="console">
+        update question set console = 1 where id = #{id}
+    </update>
+
+</mapper>

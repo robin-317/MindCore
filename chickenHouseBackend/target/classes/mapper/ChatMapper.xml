@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heima.chickenhousebackend.mapper.ChatMapper">  <!--位置-->
+
+    <!--创建聊天组-->
+    <insert id="createChat">
+        insert ignore into  chat (uid1,uid2) values (#{uid1},#{uid2})
+    </insert>
+    <!--判断聊天组是否存在-->
+    <select id="getChatByUsers" resultType="com.heima.chickenhousebackend.pojo.Chat">
+        select * from chat
+        where uid1 = #{maxId} and uid2 = #{minId}
+    </select>
+
+    <!--根据uid获取所有聊天对象的信息-->
+    <select id="getChatUserInfo" resultType="com.heima.chickenhousebackend.pojo.User">
+        SELECT
+            u.*,
+            c.id AS chat_id,
+            c.uid1,
+            c.uid2
+        FROM chat c
+                 JOIN user u
+                      ON (u.id = c.uid1 AND c.uid2 = #{id})
+                          OR (u.id = c.uid2 AND c.uid1 = #{id})
+        WHERE #{id} IN (c.uid1, c.uid2);
+    </select>
+
+    <!--查找聊天信息-->
+    <select id="getChatList" resultType="com.heima.chickenhousebackend.pojo.Chat">
+        SELECT *
+        FROM content
+        WHERE (uid1 = #{uid1} AND uid2 = #{uid2})
+           OR (uid1 = #{uid2} AND uid2 = #{uid1})
+        ORDER BY create_time ASC
+    </select>
+
+    <!--将二者聊天信息存入表-->
+    <insert id="saveChat">
+        INSERT INTO content (uid1, uid2, cid, content, create_time)
+        SELECT
+            #{uid1},
+            #{uid2},
+            c.id,
+            #{content},
+            current_time
+        FROM chat c
+        WHERE (c.uid1 = #{uid1} AND c.uid2 = #{uid2})
+           OR (c.uid1 = #{uid2} AND c.uid2 = #{uid1});
+    </insert>
+
+    <!--根据用户id获取聊天对象的信息-->
+    <select id="getUserInfoById" resultType="com.heima.chickenhousebackend.pojo.User">
+        select * from user where id = #{id}
+    </select>
+
+    <update id="updateChat">
+        update chat set uid1 = #{uid1} and uid2 = #{uid2}
+    </update>
+
+
+</mapper>

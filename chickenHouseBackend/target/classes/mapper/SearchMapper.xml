@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heima.chickenhousebackend.mapper.SearchMapper">
+
+    <!--搜索框，搜索相关内容-->
+<!--    <select id="search" resultType="com.heima.chickenhousebackend.pojo.Search">
+        SELECT *
+        FROM video v
+        JOIN post p
+        <where>
+            <if test="describe != null and describe != ''">
+                v.title LIKE CONCAT('%', #{describe}, '%')
+                or p.title LIKE CONCAT('%', #{describe}, '%')
+            </if>
+        </where>
+    </select>-->
+    <select id="search" resultType="com.heima.chickenhousebackend.pojo.Search">
+        SELECT *
+        FROM video
+        <where>
+            <if test="describe != null and describe != ''">
+                title LIKE CONCAT('%', #{describe}, '%')
+            </if>
+        </where>
+    </select>
+    <select id="search_1" resultType="com.heima.chickenhousebackend.pojo.Search">
+        SELECT *
+        FROM post
+        <where>
+            <if test="describe != null and describe != ''">
+                title LIKE CONCAT('%', #{describe}, '%')
+            </if>
+        </where>
+    </select>
+
+    <!--模糊搜索视频标题-->
+    <select id="searchVideo" resultType="com.heima.chickenhousebackend.pojo.Video">
+        select * from video where title like concat('%',#{searchInfo},'%')
+    </select>
+
+    <!--模糊搜索文章标题-->
+    <select id="searchMessage" resultType="com.heima.chickenhousebackend.pojo.Post">
+        select * from post where title like concat('%',#{searchInfo},'%')
+    </select>
+
+    <!--模糊搜索问题标题-->
+    <select id="searchQuestion" resultType="com.heima.chickenhousebackend.pojo.Question">
+        select * from question where title like concat('%',#{searchInfo},'%')
+    </select>
+
+    <!--模糊搜索用户-->
+    <select id="searchUser" resultType="com.heima.chickenhousebackend.pojo.User">
+        select * from user where username like concat('%',#{searchInfo},'%')
+    </select>
+</mapper>

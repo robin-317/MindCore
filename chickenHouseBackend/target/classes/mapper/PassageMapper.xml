@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heima.chickenhousebackend.mapper.TextMapper">  <!--位置-->
+
+    <!--根据文章id获取发帖人信息-->
+    <select id="getById" resultType="com.heima.chickenhousebackend.pojo.User">
+        select *
+        from user
+        where id = #{userId}
+    </select>
+    <!--根据文章id获取文章信息-->
+    <select id="getContentById" resultType="com.heima.chickenhousebackend.pojo.Post">
+        select *
+        from  post
+        where id = #{id}
+    </select>
+    <!--根据用户id获取用户文章展示的数据-->
+    <select id="getAllPassageListById" resultType="com.heima.chickenhousebackend.pojo.Post">
+        select *
+                from post
+                where user_id = #{id} and type = 0
+    </select>
+    <!--根据用户id获取用户问题展示的数据-->
+    <select id="getAllProblemListById" resultType="com.heima.chickenhousebackend.pojo.Post">
+        select *
+        from question
+        where user_id = #{id}
+    </select>
+</mapper>

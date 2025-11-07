@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heima.chickenhousebackend.mapper.HistoryMapper">  <!--位置-->
+
+    <!--存入历史记录信息-->
+    <insert id="insertHistory">
+        insert into history(author_id,content_id,type,watch_time,title,img,user_id)
+        values (#{authorId},#{contentId},#{type},current_time,#{title},#{img},#{userId})
+    </insert>
+
+    <!--获取用户的今天的观看历史-->
+    <select id="getToday" resultType="com.heima.chickenhousebackend.pojo.History">
+        SELECT * FROM history
+        WHERE user_id = #{id}
+          AND type = 1
+        ORDER BY watch_time DESC limit 100
+    </select>
+    <!--获取用户的昨天的观看历史-->
+    <select id="getYesterday" resultType="com.heima.chickenhousebackend.pojo.History">
+        SELECT * FROM history
+        WHERE user_id = #{id}
+          AND type = 1
+          AND DATE(watch_time) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+        ORDER BY watch_time DESC
+    </select>
+    <!--获取用户的近一周的观看历史-->
+    <select id="getWeek" resultType="com.heima.chickenhousebackend.pojo.History">
+        SELECT * FROM history
+        WHERE user_id = #{id}
+          AND type = 1
+          AND DATE(watch_time) BETWEEN DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+          AND DATE_SUB(CURDATE(), INTERVAL 2 DAY)
+        ORDER BY watch_time DESC
+    </select>
+
+
+
+    <!--获取用户的今天的观看历史1-->
+    <select id="getToday1" resultType="com.heima.chickenhousebackend.pojo.History">
+        select * from history
+        where user_id = #{id}
+          and type = 2
+        order by watch_time desc limit 100
+    </select>
+    <!--获取用户的昨天的观看历史1-->
+    <select id="getYesterday1" resultType="com.heima.chickenhousebackend.pojo.History">
+        select * from history
+        where user_id = #{id}
+          and type = 2
+          and watch_time between concat(date_sub(curdate(), interval 1 day), ' 00:00:00') and concat(date_sub(curdate(), interval 1 day), ' 23:59:59')
+        order by watch_time desc
+    </select>
+    <!--获取用户的近一周的观看历史1-->
+    <select id="getWeek1" resultType="com.heima.chickenhousebackend.pojo.History">
+        select * from history
+        where user_id = #{id}
+          and type = 2
+          and watch_time between concat(date_sub(curdate(), interval 7 day), ' 00:00:00') and concat(date_sub(curdate(), interval 2 day), ' 23:59:59')
+        order by watch_time desc
+    </select>
+
+    <!--获取用户的今天的观看历史2-->
+    <select id="getToday2" resultType="com.heima.chickenhousebackend.pojo.History">
+        select * from history
+        where user_id = #{id}
+          and type = 3
+        order by watch_time desc  limit 100
+    </select>
+    <!--获取用户的昨天的观看历史2-->
+    <select id="getYesterday2" resultType="com.heima.chickenhousebackend.pojo.History">
+        select * from history
+        where user_id = #{id}
+          and type = 3
+          and watch_time between concat(date_sub(curdate(), interval 1 day), ' 00:00:00') and concat(date_sub(curdate(), interval 1 day), ' 23:59:59')
+        order by watch_time desc
+    </select>
+    <!--获取用户的近一周的观看历史2-->
+    <select id="getWeek2" resultType="com.heima.chickenhousebackend.pojo.History">
+        select * from history
+        where user_id = #{id}
+          and type = 3
+          and watch_time between concat(date_sub(curdate(), interval 7 day), ' 00:00:00') and concat(date_sub(curdate(), interval 2 day), ' 23:59:59')
+        order by watch_time desc
+    </select>
+
+    <!--获取最近一次的历史记录-->
+    <select id="getLatest" resultType="com.heima.chickenhousebackend.pojo.History">
+        select * from history
+        order by watch_time desc
+        limit 1
+    </select>
+
+</mapper>
